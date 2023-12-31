@@ -1,0 +1,152 @@
+\documentclass[10pt,spanish,aspectratio=1610]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage[spanish]{babel}
+\spanishdecimal{.}
+\usepackage{subfig}
+\usepackage{fancyhdr}
+\usepackage{pstricks}
+\usepackage{color}
+\usepackage[ruled]{algorithm2e}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{xcolor}
+
+\definecolor{graywhite}{rgb}{0.9529,0.9607,0.9686}
+\definecolor{bluegray}{rgb}{0.6823, 0.7411, 0.8}
+\definecolor{darkred}{rgb}{0.7372, 0.2392, 0.2392}
+\definecolor{bluedark}{rgb}{0.294, 0.4705, 0.6407}
+\definecolor{darkgreen}{rgb}{0.1764, 0.5294, 0.0901}
+\lstset{
+  backgroundcolor=\color{graywhite},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{darkgreen},    % comment style
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{darkred},       % keyword style
+  language=Octave,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=7pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{bluedark}, % the style that is used for the line-numbers
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{bluedark},     % string literal style
+  frame=single,
+  rulecolor=\color{bluegray},
+  tabsize=2,                   % sets default tabsize to 2 spaces
+  xleftmargin=1cm,
+  xrightmargin=0.5cm,
+  framexleftmargin=0.5cm,
+  extendedchars=true,
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1,
+}
+
+\DeclareMathOperator{\atantwo}{atan2}
+\setbeamercolor{block title}{fg=white,bg=blue!70!black}
+\setbeamercolor{block body}{fg=black, bg=blue!10!white}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercovered{transparent}
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{frametitle}{
+  \leavevmode
+  \hbox{\begin{beamercolorbox}[wd=0.85\paperwidth,left]{frametitle}
+    \usebeamerfont{frametitle}\insertframetitle
+  \end{beamercolorbox}
+%  \begin{beamercolorbox}[wd=0.25\paperwidth,center]{frametitle}
+%    \usebeamerfont{frametitle}\hfill\hspace*{5ex}\footnotesize{\insertsubsection}
+%  \end{beamercolorbox}
+}}
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[colsep=-0.5pt,wd=.33\paperwidth,ht=3ex,dp=1.5ex,center]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshortauthor~~ (\insertshortinstitute)
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=-0.5pt,wd=.34\paperwidth,ht=3ex,dp=1.5ex,center]{date in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshorttitle
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=-0.5pt,wd=.33\paperwidth,ht=3ex,dp=1.5ex,right]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\insertshortdate{} \hspace*{2em}\scriptsize{\insertframenumber{}}\hspace*{1ex}
+    \end{beamercolorbox}
+  }
+}
+\setbeamersize
+{
+    text margin left=0.25cm,
+    text margin right=0.25cm
+}
+
+\begin{document}
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\figurename}{Figura}
+
+\title[Vehículos autónomos y la liga AutoModelCar]{Comportamientos para vehículos autónomos y la categoría AutoModelCar}
+\author[Marco Negrete]{Instructor: Dr. Marco Antonio Negrete Villanueva}
+\institute[FI, UNAM]{Facultad de Ingeniería, UNAM}
+\date[EIR 2024]{Escuela de Invierno de Robótica 2024\\Nanchital, Veracruz\\\url{https://github.com/mnegretev/EIR-2024-AutonomousVehicles}}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+  \Large{Objetivos:}
+  \normalsize
+  \[\]
+  \textbf{Objetivo General:} Revisar conceptos básicos para operar un vehículo sin conductor en el contexto de las pruebas de la categoría AutoModelCar
+  \\
+  \textbf{Objetivos Específicos:}
+  \begin{itemize}
+  \item Revisar el hardware necesario para tener un vehículo sin conductor
+  \item Dar un panorama general del software necesario para desarrollar un vehículo sin conductor
+  \item Revisar las herramientas disponibles para implementar los comportamientos básicos en un vehículo sin conductor
+    \begin{itemize}
+    \item Detección de carriles
+    \item Seguimiento de carriles
+    \item Rebase
+    \item Detección de señales de tránsito
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \Large{Contenido}
+  \normalsize
+  \[\]
+
+  \tableofcontents
+\end{frame}
+
+\input{Tex/Introduccion.tex}
+\input{Tex/TMR.tex}
+\input{Tex/DeteccionCarriles.tex}
+% \input{Tex/Navegacion.tex}
+% \input{Tex/Vision.tex}
+% \input{Tex/Manipulacion.tex}
+% \input{Tex/SintesisVoz.tex}
+% \input{Tex/ReconocimientoVoz.tex}
+% \input{Tex/Planeacion.tex}
+\bibliographystyle{abbrv}
+\bibliography{References}
+\begin{frame}
+  \Huge{Gracias}
+  \[\]
+  \Large{Contacto}
+  \[\]
+  \large
+  Dr. Marco Negrete\\
+  Profesor Asociado C\\
+  Departamento de Procesamiento de Señales\\
+  Facultad de Ingeniería, UNAM.
+\[\]
+mnegretev.info\\
+marco.negrete@ingenieria.unam.edu\\
+\end{frame}
+\end{document}
