@@ -1,0 +1,440 @@
+#VRML_SIM R2022a utf8
+WorldInfo {
+  ERP 0.6
+  basicTimeStep 33
+  lineScale 5
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "TruckWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.573416161834862 -0.5670438167517 0.5913165101958848 4.208026619107559
+  position 17.29569617918376 22.841360757628607 147.28468319514664
+  near 1
+  follow "vehicle"
+  lensFlare LensFlare {
+  }
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+Floor {
+  size 10000 10000
+  tileSize 1 1
+  appearance PBRAppearance {
+    baseColor 0.45098 0.823529 0.0862745
+    baseColorMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2022a/projects/vehicles/worlds/textures/ground_grass.jpg"
+      ]
+    }
+    roughness 1
+    metalness 0
+    emissiveIntensity 0
+  }
+}
+BmwX5 {
+  translation 10.003107562028891 -1.5000000000000666 0.4969701306177328
+  rotation -9.135379245293787e-15 -1 1.7544986643064575e-12 0.004488380251354504
+  color 0.643137 0 0
+  controller "bmw_x5_controller"
+  sensorsSlotTop [
+    Camera {
+      translation 0.8 0 -0.1
+      rotation 0 1 0 0.07
+      boundingObject TexturedBox {
+      }
+      width 1280
+      height 960
+      noise 0.02
+    }
+    VelodyneHDL-64E {
+      translation 0.3 0 0.15
+      enablePhysics FALSE
+    }
+  ]
+}
+StraightRoadSegment {
+  translation 10 0 0.1
+  name "north_straight_road"
+  length 110
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+SpeedLimitSign {
+  translation 65 -4.5 0
+  rotation 0 0 1 -3.1415853071795863
+  signBoards [
+    SpeedLimitPanel {
+      translation 0.023 0 0
+      signImage [
+        "../resources/SpeedLimit20.png"
+      ]
+    }
+  ]
+}
+CurvedRoadSegment {
+  translation 120 20 0.1
+  rotation 0 0 1 -1.5708
+  name "north_west_curved_road"
+  lines [
+    RoadLine {
+      type "continuous"
+    }
+  ]
+  curvatureRadius 20
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation 140 20 0.1
+  rotation 0 0 1 1.5708
+  name "west_straight_road"
+  length 50
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+CurvedRoadSegment {
+  translation 120 70 0.1
+  name "south_west_curved_road"
+  lines [
+    RoadLine {
+      type "continuous"
+    }
+  ]
+  curvatureRadius 20
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation 95 90 0.1
+  name "south_west_straight_road"
+  length 25
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+CurvedRoadSegment {
+  translation 95 75 0.1
+  rotation 0 0 1 1.5708
+  name "west_small_curve"
+  lines [
+    RoadLine {
+      type "continuous"
+    }
+  ]
+  curvatureRadius 15
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation 80 68.5 0.1
+  rotation 0 0 1 1.5708
+  name "west_intersection_south_segment"
+  length 6.5
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+RoadIntersection {
+  translation 80 60 0.1
+  rotation 0 0 1 0.785398
+  name "west_intersection"
+  boundingObject TRUE
+}
+GenericTrafficLight {
+  translation 85 65 -0.02
+  rotation 0 0 1 -1.5707953071795862
+  name "trafficLight4_westIntersection"
+  greenTime 30
+  state "green"
+}
+GenericTrafficLight {
+  translation 85 55 -0.02
+  rotation -1.0181599999964154e-07 -2.6516399999906644e-06 0.9999999999964793 -3.1415853071795863
+  name "trafficLight3_westIntersection"
+  greenTime 5
+  redTime 2
+  state "green"
+}
+GenericTrafficLight {
+  translation 75 65 -0.02
+  name "trafficLight2_westIntersection"
+  greenTime 5
+  redTime 2
+  state "green"
+}
+GenericTrafficLight {
+  translation 75 55 -0.02
+  rotation 0 0 1 1.5708003061004252
+  name "trafficLight1_westIntersection"
+  greenTime 5
+  redTime 2
+  state "green"
+}
+StraightRoadSegment {
+  translation 80 35 0.1
+  rotation 0 0 1 1.5708
+  name "west_intersection_north_segment"
+  length 16.5
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+CurvedRoadSegment {
+  translation 105 35 0.1
+  name "west_long_curve"
+  lines [
+    RoadLine {
+      type "continuous"
+    }
+  ]
+  curvatureRadius 25
+  totalAngle 4.71239
+  subdivision 50
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation 88.5 60 0.1
+  name "west_intersection_west_segment"
+  length 16.5
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation 58.5 60 0.1
+  name "inter_intersections_road"
+  length 13
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+RoadIntersection {
+  translation 50 60 0.1
+  rotation 0 0 1 0.785398
+  name "east_intersection"
+  boundingObject TRUE
+}
+GenericTrafficLight {
+  translation 45 66 -0.02
+  name "trafficLight4_eastIntersection"
+  greenTime 5
+  redTime 2
+  state "green"
+}
+GenericTrafficLight {
+  translation 55 55 -0.02
+  rotation 0 0 1 3.14158
+  name "trafficLight3_eastIntersection"
+  greenTime 5
+  redTime 2
+  state "green"
+}
+GenericTrafficLight {
+  translation 55 66 -0.02
+  rotation 0 0 1 -1.4398996938995747
+  name "trafficLight2_eastIntersection"
+  greenTime 5
+  redTime 2
+  state "green"
+}
+GenericTrafficLight {
+  translation 45 55 -0.02
+  rotation 0 0 1 1.5708003061004252
+  name "trafficLight1_eastIntersection"
+  greenTime 5
+  redTime 2
+  state "green"
+}
+StraightRoadSegment {
+  translation 25 60 0.1
+  name "east_intersection_east_segment"
+  length 16.5
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+CurvedRoadSegment {
+  translation 25 35 0.1
+  rotation 0 0 1 -1.5708
+  name "east_long_curve"
+  lines [
+    RoadLine {
+      type "continuous"
+    }
+  ]
+  curvatureRadius 25
+  totalAngle 4.71239
+  subdivision 50
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation 50 35 0.1
+  rotation 0 0 1 1.5708
+  name "east_intersection_north_segment"
+  length 16.5
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation 50 68.5 0.1
+  rotation 0 0 1 1.571
+  name "east_intersection_south_segment"
+  length 6.5
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+CurvedRoadSegment {
+  translation 35 75 0.1
+  name "east_small_curve"
+  lines [
+    RoadLine {
+      type "continuous"
+    }
+  ]
+  curvatureRadius 15
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation 10 90 0.1
+  name "south_east_straight_segment"
+  length 25
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+CurvedRoadSegment {
+  translation 10 70 0.1
+  rotation 0 0 1 1.5708
+  name "south_east_curved_road"
+  lines [
+    RoadLine {
+      type "continuous"
+    }
+  ]
+  curvatureRadius 20
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+StraightRoadSegment {
+  translation -10 20 0.1
+  rotation 0 0 1 1.5708
+  name "east_straight_road"
+  length 50
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+CurvedRoadSegment {
+  translation 10 20 0.1
+  rotation 0 0 1 3.1415926
+  lines [
+    RoadLine {
+      type "continuous"
+    }
+  ]
+  curvatureRadius 20
+  roadBoundingObject TRUE
+  rightBorderBoundingObject TRUE
+  leftBorderBoundingObject TRUE
+}
+HighwayPole {
+  translation 16 -5.5 0
+  rotation 0 0 1 3.141592
+  name "roadPole"
+  length 7
+  rightHorizontalSigns [
+    HighwaySign {
+      name "vertical sign"
+      height 1.5
+      length 6.5
+      texture [
+        "../resources/FMR.jpg"
+      ]
+    }
+  ]
+  rightVerticalSigns [
+    HighwaySign {
+      name "horizontal sign"
+      height 2.1
+      length 3.2
+      texture [
+        "../resources/Nanchital.jpg"
+      ]
+    }
+  ]
+}

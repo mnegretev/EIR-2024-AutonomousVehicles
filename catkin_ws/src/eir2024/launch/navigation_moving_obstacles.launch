@@ -6,7 +6,7 @@
   <include file="$(find webots_ros)/launch/webots.launch">
     <arg name="mode" value="realtime"/>
     <arg name="no_gui" value="$(arg no_gui)"/>
-    <arg name="world" value="$(find eir2024)/worlds/navigation_no_obstacles.wbt"/>
+    <arg name="world" value="$(find eir2024)/worlds/navigation_moving_obstacles.wbt"/>
   </include>
   <node name="simple_gui" pkg="simple_gui" type="simple_gui"/>
 
