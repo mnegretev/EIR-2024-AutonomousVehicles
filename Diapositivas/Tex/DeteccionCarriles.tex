@@ -15,6 +15,31 @@
   \end{figure}
 \end{frame}
 
+\begin{frame}\frametitle{OpenCV}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{Figuras/OpenCVLogo.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      OpenCV es una biblioteca libre de visión artificial, originalmente desarrollada por Intel.
+      
+      Programación en código  Python, C y C++
+      
+      Existen versiones para GNU/Linux, Mac OS X y Windows
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}\frametitle{OpenCV}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{Figuras/OpenCVOverview.png}
+\end{figure}
+\end{frame}
+
 \begin{frame}\frametitle{Convolución}
   Si se conoce la respuesta al impulso $H(x,y)$ de un sistema SLID, se puede obtener la salida $O(x,y)$ ante cualquier entrada $I(x,y)$, mediante la convolución, definida como:
   \[O(x,y) = I(x,y)*H(x,y) = \sum_{i=-\infty}^\infty \sum_{j=-\infty}^\infty I(i,j)H(x-i, y-j)\]
@@ -48,6 +73,18 @@
 \end{frame}
 
 \begin{frame}\frametitle{El filtro Gaussiano}
+  Una primera aplicación de una convolución es el filtro Gaussiano
+  \[
+    g(x,y) = \frac{1}{2\pi\sigma^2}e^{-(x^2 + y^2)/(2\sigma^2)}
+  \]
+  Se utiliza para reducir el tipo de ruido más común que es el ruido Gaussiano. Un ejemplo de kernel Gaussiano es:
+  \[ H = \frac{1}{16}
+  \left[\begin{tabular}{ccc}
+      1 & 2 & 1\\
+      2 & 4 & 2\\
+      1 & 2 & 1
+  \end{tabular}\right]
+\]
 \end{frame}
 
 \begin{frame}\frametitle{Gradiente}
@@ -96,6 +133,35 @@
     G_{m_{i,j}} &=& \sqrt{G_{x_{i,j}}^2 + G_{y_{i,j}}^2}\\
     G_{a_{i,j}} &=& \atantwo(G_{y_{i,j}}, G_{y_{i,j}})\\
   \end{eqnarray*}
+  Otra forma de calcular la magnitud del gradiente es mediante la norma 1:
+  \[G_{m_{i,j}} = \left|G_{x_{i,j}}\right| + \left|G_{y_{i,j}}\right|\]
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 02 - Gradiente de una imagen}
+  \begin{enumerate}
+  \item Abra una terminal y ejecute la simulación con el comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+roslaunch eir2024 navigation_no_obstacles.launch
+    \end{lstlisting}
+  \item En otra terminal, ejecute el ejercicio dos con el siguiente comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+rosrun eir2024 exercise02.py
+    \end{lstlisting}
+  \item Detenga el ejercicio 02, abra el archivo fuente y agregue el siguiente código en la línea 25:
+    \begin{lstlisting}[language=Python,firstnumber=25]
+grad_x = cv2.Sobel(gray, cv2.CV_16S, 1, 0, ksize=3)
+grad_y = cv2.Sobel(gray, cv2.CV_16S, 0, 1, ksize=3)
+abs_grad_x = cv2.convertScaleAbs(grad_x)
+abs_grad_y = cv2.convertScaleAbs(grad_y)
+grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
+cv2.imshow("Gradient Magnitude", grad)
+    \end{lstlisting}
+  \item Corra nuevamente el ejercicio y observe el resultado. Ahora agregue el siguiente código en la línea 21:
+    \begin{lstlisting}[language=Python,firstnumber=21]
+gray = cv2.GaussianBlur(gray, (5, 5), 0)
+    \end{lstlisting}
+  \item Corra nuevamente el ejercicio 2 y observe el resultado. 
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}\frametitle{Detector de Bordes de Canny}
@@ -142,6 +208,24 @@
   \includegraphics[width=\textwidth]{Figuras/DoubleThreshold.pdf}
 \end{frame}
 
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 03 - Detección de Bordes}
+  \begin{enumerate}
+  \item Abra una terminal y ejecute la simulación con el comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+roslaunch eir2024 navigation_no_obstacles.launch
+    \end{lstlisting}
+  \item Abra el archivo fuente del ejercicio 03 y agregue el siguiente código en la línea 33:
+    \begin{lstlisting}[language=Python, firstnumber=33]
+gray = cv2.GaussianBlur(gray, (5,5), 0)
+edges = cv2.Canny(gray, lower_threshold, upper_threshold)
+    \end{lstlisting}
+  \item En otra terminal, ejecute el ejercicio 03 con el siguiente comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+rosrun eir2024 exercise03.py
+    \end{lstlisting}
+  \item Sintonice los umbrales hasta obtener una detección de bordes satisfactoria. Utilice la GUI para mover el vehículos y probar en diferentes condiciones. 
+  \end{enumerate}
+\end{frame}
 
 \begin{frame}\frametitle{La Transformada Hough}
   La Transformada Hough es un método que permite encontrar líneas, círculos y otras formas geométricas que se puedan describir fácilmente mediante expresiones analíticas. En el caso de las líneas, se trata de encontrar los dos parámetros que describen la recta:

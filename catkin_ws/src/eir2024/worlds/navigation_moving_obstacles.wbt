@@ -103,8 +103,8 @@ BmwX5 {
       rotation 0 1 0 0.07
       boundingObject TexturedBox {
       }
-      width 1280
-      height 960
+      width 640
+      height 480
       noise 0.02
     }
     VelodyneHDL-64E {
