@@ -293,3 +293,41 @@ rosrun eir2024 exercise03.py
   \end{algorithm}
 \end{frame}
 
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 04 - Detección de líneas}
+  \begin{enumerate}
+  \item Abra una terminal y ejecute la simulación con el comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+roslaunch eir2024 navigation_no_obstacles.launch
+    \end{lstlisting}
+  \item Abra el archivo fuente del ejercicio 04 y agregue el siguiente código en la línea 45:
+    \begin{lstlisting}[language=Python, firstnumber=45]
+gray = cv2.GaussianBlur(gray, (5,5), 0)
+edges = cv2.Canny(gray, 50, 150)
+lines = cv2.HoughLinesP(edges, 2, numpy.pi/180, hough_threshold, minLineLength=min_length, maxLineGap=max_gap)
+draw_lines(lines, img)
+    \end{lstlisting}
+  \item En otra terminal, ejecute el ejercicio 04 con el siguiente comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+rosrun eir2024 exercise04.py
+    \end{lstlisting}
+  \item Sintonice las constantes hasta obtener una detección de líneas satisfactoria. Utilice la GUI para mover el vehículos y probar en diferentes condiciones. 
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Detección de carriles}
+  En el ambiente se pueden detectar varias líneas pero no todas son bordes de carriles:
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figuras/LineFiltering.png}
+  \end{figure}
+  \begin{itemize}
+  \item Los bordes de los carriles no pueden ser horizontales cerca del auto
+  \item En un terreno plano no pueden estar por arriba del horizonte
+  \item Se puede hacer un promedio ponderado de las líneas detectadas
+  \item Es mejor tomar como origen el centro del frente del vehículo 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Detección de carriles}
+  
+\end{frame}
