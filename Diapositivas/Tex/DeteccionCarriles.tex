@@ -329,5 +329,74 @@ rosrun eir2024 exercise04.py
 \end{frame}
 
 \begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Detección de carriles}
-  
+  \begin{enumerate}
+  \item Abra el archivo fuente del ejercicio 05 y agregue el siguiente código en la función \texttt{detect\_lines}:
+    \begin{lstlisting}[language=Python,firstnumber=24]
+blur  = cv2.GaussianBlur(img, (5, 5), 0)
+edges = cv2.Canny(blur, 50, 150)
+lines = cv2.HoughLinesP(edges, 2, numpy.pi/180, 80, minLineLength=80, maxLineGap=100)[:,0]    
+    \end{lstlisting}
+  \item En la función \texttt{to\_normal\_form} agregue las siguientes líneas para pasar una línea a la forma normal:
+    \begin{lstlisting}[language=Python,firstnumber=36]
+A = y2 - y1
+B = x1 - x2
+C = A*x1 + B*y1
+theta = math.atan2(B,A)
+rho   = C/math.sqrt(A*A + B*B)
+if rho < 0:
+    theta += math.pi
+    rho = -rho  
+    \end{lstlisting}
+  \end{enumerate}  
 \end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Detección de carriles}
+  \begin{enumerate}
+    \setcounter{enumi}{2}
+  \item Agregue el siguiente código en la función \texttt{translate\_lines\_to\_bottom\_center}:
+    \begin{lstlisting}[language=Python,firstnumber=55]
+for x1, y1, x2, y2 in lines:
+    nx1 = x1 - x_center
+    nx2 = x2 - x_center
+    ny1 = y_center - y1
+    ny2 = y_center - y2
+    new_lines.append([nx1, ny1, nx2, ny2])
+    \end{lstlisting}
+  \item Para filtrar las líneas detectadas, agregue el siguiente código en la función \texttt{filter\_lines}:
+    \begin{lstlisting}[language=Python,firstnumber=80]
+for x1, y1, x2, y2 in lines:
+    rho, theta = to_normal_form(x1, y1, x2, y2)
+    if (theta > -max_angle_right and theta < -min_angle_right) or (theta > min_angle_right and theta < max_angle_right):
+        right_lines.append([x1, y1, x2, y2])
+    if (theta > min_angle_left and theta < max_angle_left) or (theta > -max_angle_left and theta < -max_angle_left):
+        left_lines.append([x1, y1, x2, y2])
+    left_lines  = left_lines  if len(left_lines)  > 0 else None
+    right_lines = right_lines if len(right_lines) > 0 else None
+    \end{lstlisting}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 05 - Detección de carriles}
+  \begin{itemize}
+    \setcounter{enumi}{4}
+  \item Agregue las siguientes líneas en la función \texttt{weighted\_average} para calcular un promedio ponderado de las líneas detectadas:
+    \begin{lstlisting}[language=Python,firstnumber=100]
+weights = numpy.asarray([math.sqrt((x2 - x1)**2 + (y2 - y1)**2) for x1, y1, x2, y2 in lines])
+weights = weights/sum(weights)
+for i in range(len(lines)):
+    x1, y1, x2, y2 = lines[i]
+    rho, theta = to_normal_form(x1, y1, x2, y2)
+    weighted_average_rho   += rho*weights[i]
+    weighted_average_theta += theta*weights[i]
+    \end{lstlisting}
+  \item Abra una terminal y ejecute la simulación con el comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+roslaunch eir2024 navigation_no_obstacles.launch
+    \end{lstlisting}
+  \item Finalmente, en otra terminal, ejecute el ejercicio 05 con el comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+rosrun eir2024 exercise05.py
+    \end{lstlisting}
+  \end{itemize}
+\end{frame}
+
