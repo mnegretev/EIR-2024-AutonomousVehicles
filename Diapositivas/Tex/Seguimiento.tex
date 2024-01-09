@@ -93,3 +93,30 @@ rosrun eir2024 exercise06.py _k_rho:=0.001 _k_theta:=0.01 _max_speed:=20
   \item Cuando estén sintonizadas las constantes, pruebe con velocidades $v_{max}$ más altas.
   \end{enumerate}
 \end{frame}
+
+\begin{frame}\frametitle{Nubes de puntos}
+  Las nubes de puntos son conjuntos de vectores que representan puntos en el espacio. Estos vectores generalmente tienen información de posición $(x,y,z)$. También pueden contener información de color $(x,y,z,r,g,b)$.
+  \begin{figure}
+      \centering
+      \includegraphics[width=0.5\textwidth]{Figuras/CloudExample.png}
+  \end{figure}
+  Son útiles para determinar la posición en el espacio de los objetos reconocidos.
+  \begin{itemize}
+  \item Para determinar si hay obstáculos frente al auto se puede emplear el sensor Lidar
+  \item Este sensor genera una nube de puntos
+  \item La nube se debe filtrar para suprimir el piso y los puntos del propio auto
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[containsverbatim]\frametitle{Ejercicio 07 - Detección de obstáculos}
+  \begin{enumerate}
+  \item Abra el código fuente del ejercicio 07 y agregue el siguiente código:
+    
+  \item Abra una terminal y ejecute la simulación con el comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+roslaunch eir2024 navigation_static_obstacles.launch
+    \end{lstlisting}
+  \item 
+  \item Cuando estén sintonizadas las constantes, pruebe con velocidades $v_{max}$ más altas.
+  \end{enumerate}
+\end{frame}
