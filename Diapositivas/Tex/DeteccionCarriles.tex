@@ -370,8 +370,8 @@ for x1, y1, x2, y2 in lines:
         right_lines.append([x1, y1, x2, y2])
     if (theta > min_angle_left and theta < max_angle_left) or (theta > -max_angle_left and theta < -max_angle_left):
         left_lines.append([x1, y1, x2, y2])
-    left_lines  = left_lines  if len(left_lines)  > 0 else None
-    right_lines = right_lines if len(right_lines) > 0 else None
+left_lines  = left_lines  if len(left_lines)  > 0 else None
+right_lines = right_lines if len(right_lines) > 0 else None
     \end{lstlisting}
   \end{enumerate}
 \end{frame}
