@@ -22,7 +22,12 @@ def callback_rgb_image(msg):
     #
     # Aplique un filtro de Sobel y calcule la magnitud del gradiente con la norma 1
     #
-    
+    grad_x = cv2.Sobel(gray, cv2.CV_16S, 1, 0, ksize=3)
+    grad_y = cv2.Sobel(gray, cv2.CV_16S, 0, 1, ksize=3)
+    abs_grad_x = cv2.convertScaleAbs(grad_x)
+    abs_grad_y = cv2.convertScaleAbs(grad_y)
+    grad = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
+    cv2.imshow("Gradient Magnitude", grad)
     cv2.imshow("Image BGR", img)
     cv2.waitKey(10)
 
