@@ -18,7 +18,7 @@ def callback_rgb_image(msg):
     #
     # Agregue un filtro Gaussiano para disminuir el ruido
     #
-    
+    gray = cv2.GaussianBlur(gray, (5,5), 0)
     #
     # Aplique un filtro de Sobel y calcule la magnitud del gradiente con la norma 1
     #

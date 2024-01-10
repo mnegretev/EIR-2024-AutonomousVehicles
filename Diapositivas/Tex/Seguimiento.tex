@@ -110,13 +110,40 @@ rosrun eir2024 exercise06.py _k_rho:=0.001 _k_theta:=0.01 _max_speed:=20
 
 \begin{frame}[containsverbatim]\frametitle{Ejercicio 07 - Detección de obstáculos}
   \begin{enumerate}
-  \item Abra el código fuente del ejercicio 07 y agregue el siguiente código:
-    
-  \item Abra una terminal y ejecute la simulación con el comando:
+  \item Abra el código fuente del ejercicio 07 y agregue el siguiente código en la línea 44:
+    \begin{lstlisting}[language=Python,firstnumber=44]
+P = P[(P[:,2] > -1) & (P[:,2] < 0.3) ] #Filters points on floor and higher points
+P = P[(P[:,0] > lower_x ) & (P[:,0] < upper_x ) & (P[:,1] < upper_y ) & (P[:,1] > lower_y )]      
+    \end{lstlisting}
+     \item Abra una terminal y ejecute la simulación con el comando:
     \begin{lstlisting}[language=bash,numbers=none]
 roslaunch eir2024 navigation_static_obstacles.launch
     \end{lstlisting}
-  \item 
-  \item Cuando estén sintonizadas las constantes, pruebe con velocidades $v_{max}$ más altas.
+  \item En otra terminal ejecute el ejercicio 7 con el comando:
+    \begin{lstlisting}[language=bash,numbers=none]
+rosrun eir2024 exercise07.py
+    \end{lstlisting}
+  \item Mueva los vehículos en el simulador para verificar la correcta detección de obstáculos. 
   \end{enumerate}
+\end{frame}
+
+\begin{frame}\frametitle{Máquinas de estados}
+  \begin{itemize}
+  \item Sirven para representar procesos discretos determinísticos
+  \item Están definidas por la tupla $(S, s_0, I, O, Z, F, F_o\)$:
+    \begin{itemize}
+    \item $S$ : Conjunto de estados
+    \item $s_0 \in S$ : Estado inicial
+    \item $I$ : Conjunto de entradas
+    \item $O$ : Conjunto de salidas
+    \item $Z \subset S$ : conjunto de estados finales (puede ser vacío)
+    \item $F : S\times I \rightarrow S$ : Función de transición de estados (que generalmente se determina con una carta ASM)
+    \item $F_o : \S \rightarrow O$ : Función de salida 
+    \end{itemize}
+  \item Se pueden usar para coordinar los comportamientos del vehículo 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{Ejercicio 08 - Rebase}
+  
 \end{frame}

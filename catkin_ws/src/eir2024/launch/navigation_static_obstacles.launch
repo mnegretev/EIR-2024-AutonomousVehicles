@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="max_speed" default="20"/>
+  <env name="WEBOTS_HOME" value="/usr/local/webots"/>
+  <arg name="no_gui" default="false," doc="Start Webots with minimal GUI"/>
+  
+  <include file="$(find webots_ros)/launch/webots.launch">
+    <arg name="mode" value="realtime"/>
+    <arg name="no_gui" value="$(arg no_gui)"/>
+    <arg name="world" value="$(find eir2024)/worlds/navigation_static_obstacles.wbt"/>
+  </include>
+  <node name="simple_gui" pkg="simple_gui" type="simple_gui"/>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find eir2024)/rviz/navigation_static_obstacles.rviz"/>
+
+  <node name="lane_detector" pkg="eir2024" type="lane_detector_canny_hough.py" output="screen"/>
+  <node name="lane_tracker"  pkg="eir2024" type="lane_tracking_control_P.py"   output="screen">
+    <param name="max_speed" value="$(arg max_speed)"/>
+  </node>
+  <node name="obstacle_detector" pkg="eir2024" type="obstacle_detector.py" output="screen"/>
+  <node name="change_lane" pkg="eir2024" type="change_lane.py" output="screen">  
+    <param name="/use_sim_time" value="true"/>
+  </node>
+  <node name="success" pkg="eir2024" type="success.py" output="screen"/>
+  <node name="stop" pkg="eir2024" type="stop.py" output="screen"/>  
+  <node name="lane" pkg="eir2024" type="lane.py" output="screen"/> 
+
+  <node pkg="tf" type="static_transform_publisher" name="car_to_lidar"  args="  0 0 2.0 0 0 0 car_link lidar_link 30"/>
+  <node pkg="tf" type="static_transform_publisher" name="car_to_camera" args="1.2 0 1.5 0 0 0 car_link camera_link 30"/>
+  <node pkg="tf" type="static_transform_publisher" name="car_to_gyro"   args="  0 0 0.1 0 0 0 car_link gyro_link 30"/>
+  <node pkg="tf" type="static_transform_publisher" name="car_to_gps"    args="  0 0 0.1 0 0 0 car_link gps_link 10"/>
+  
+</launch>

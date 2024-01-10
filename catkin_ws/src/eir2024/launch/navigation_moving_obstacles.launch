@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+  
   <env name="WEBOTS_HOME" value="/usr/local/webots"/>
   <arg name="no_gui" default="false," doc="Start Webots with minimal GUI"/>
   
