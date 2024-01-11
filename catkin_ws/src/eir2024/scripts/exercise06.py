@@ -24,7 +24,17 @@ def calculate_control(rho_l, theta_l, rho_r, theta_r):
     # el ángulo del volante 'delta' en función de los parámetros de las líneas
     # observadas.
     #
-    
+    if rho_l != 0 and rho_r != 0:
+        error_rho   = (rho_l   - goal_rho_l   + goal_rho_r   - rho_r)/2
+        error_theta = (theta_l - goal_theta_l + goal_theta_r - theta_r)/2
+    elif rho_l != 0:
+        error_rho   = rho_l   - goal_rho_l  
+        error_theta = theta_l - goal_theta_l
+    else:
+        error_rho   = goal_rho_r   - rho_r  
+        error_theta = goal_theta_r - theta_r
+    steering = k_rho*error_rho + k_theta*error_theta
+    speed = max_speed*(1 - k_delta*abs(steering))
     return speed, steering
 
 def callback_left_lane(msg):
