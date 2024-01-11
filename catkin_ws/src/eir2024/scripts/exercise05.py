@@ -21,7 +21,9 @@ def detect_lines(img):
     # N es el número de líneas detectadas y cada línea está dada por la
     # tupla (x1,y1,x2,y2)
     #
-    
+    blur  = cv2.GaussianBlur(img, (5, 5), 0)
+    edges = cv2.Canny(blur, 50, 150)
+    lines = cv2.HoughLinesP(edges, 2, numpy.pi/180, 80, minLineLength=80, maxLineGap=100)[:,0]    
     return lines
 
 def to_normal_form(x1, y1, x2, y2):
@@ -31,7 +33,14 @@ def to_normal_form(x1, y1, x2, y2):
     # Transforme la línea dada por los puntos (x1,y1) y  (x2,y2)
     # a la forma normal rho,theta
     #
-   
+    A = y2 - y1
+    B = x1 - x2
+    C = A*x1 + B*y1
+    theta = math.atan2(B,A)
+    rho   = C/math.sqrt(A*A + B*B)
+    if rho < 0:
+        theta += math.pi
+        rho = -rho  
     return numpy.asarray([rho, theta])
 
 def translate_lines_to_bottom_center(lines, x_center, y_center):
@@ -43,7 +52,13 @@ def translate_lines_to_bottom_center(lines, x_center, y_center):
     # Recuerde que el centro original de la imagen está en la esquina superior
     # izquierda. El nuevo origen está dado por las variables x_center, y_center
     #
-    
+    for x1, y1, x2, y2 in lines:
+        nx1 = x1 - x_center
+        nx2 = x2 - x_center
+        ny1 = y_center - y1
+        ny2 = y_center - y2
+        new_lines.append([nx1, ny1, nx2, ny2])
+
     return new_lines
 
 def filter_lines(lines):
@@ -63,7 +78,14 @@ def filter_lines(lines):
     # tupla (x1,y1,x2,y2). Devuelva un conjunto para las líneas izquierdas
     # y otra para las derechas. 
     #
-    
+    for x1, y1, x2, y2 in lines:
+        rho, theta = to_normal_form(x1, y1, x2, y2)
+        if (theta > -max_angle_right and theta < -min_angle_right) or (theta > min_angle_right and theta < max_angle_right):
+            right_lines.append([x1, y1, x2, y2])
+        if (theta > min_angle_left and theta < max_angle_left) or (theta > -max_angle_left and theta < -max_angle_left):
+            left_lines.append([x1, y1, x2, y2])
+    left_lines  = left_lines  if len(left_lines)  > 0 else None
+    right_lines = right_lines if len(right_lines) > 0 else None
     return left_lines, right_lines
 
 def weighted_average(lines):
@@ -76,7 +98,14 @@ def weighted_average(lines):
     # proporcional a su longitud. Devuelva el promedio ponderado de los
     # parámetros en forma normal rho, theta. 
     #
-    
+    weights = numpy.asarray([math.sqrt((x2 - x1)**2 + (y2 - y1)**2) for x1, y1, x2, y2 in lines])
+    weights = weights/sum(weights)
+    for i in range(len(lines)):
+        x1, y1, x2, y2 = lines[i]
+        rho, theta = to_normal_form(x1, y1, x2, y2)
+        weighted_average_rho   += rho*weights[i]
+        weighted_average_theta += theta*weights[i]
+
     return weighted_average_rho, weighted_average_theta
 
 def draw_normal_line(rho, theta, length, img,color):
